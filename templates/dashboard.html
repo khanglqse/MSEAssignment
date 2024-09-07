@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    hello {{user.username}}
+    <a href="{{ url_for('main.expenses') }}" class="btn">My Expenses!</a>
+
+{% endblock %}
