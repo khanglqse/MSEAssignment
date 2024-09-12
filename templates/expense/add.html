@@ -1,19 +1,99 @@
-<!-- Expense Dialog -->
-<div id="expenseDialog" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span id="closeDialog" class="close">&times;</span>
-        <h2>Add Expense</h2>
-        <form id="expenseForm" method="post" action="{{ url_for('main.add_expense') }}">
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" required>
-
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" name="amount" step="0.01" required>
-
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" required>
-
-            <button type="submit" class="btn">Add Expense</button>
-        </form>
+<div id="expenseDialog" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title" id="dialogTitle">Add Expense</p>
+            <button id="closeDialog" class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="expenseForm" method="post" action="{{ url_for('main.add_expense') }}">
+                <input type="hidden" id="categoryFilter" name="category_filter" value="{{ filters.get('category', '') }}">
+                <input type="hidden" id="startDateFilter" name="start_date" value="{{ filters.get('start_date', '') }}">
+                <input type="hidden" id="endDateFilter" name="end_date" value="{{ filters.get('end_date', '') }}">
+                <input type="hidden" id="minAmountFilter" name="min_amount" value="{{ filters.get('min_amount', '') }}">
+                <input type="hidden" id="maxAmountFilter" name="max_amount" value="{{ filters.get('max_amount', '') }}">
+                <input type="hidden" id="currentPage" name="page" value="{{ page }}">
+                <input type="hidden" id="pageSize" name="size" value="{{ size }}">
+                <input type="hidden" id="expenseId" name="expenseId" value="">
+                <div class="field">
+                    <label class="label" for="description">Description:</label>
+                    <div class="control">
+                        <input class="input" type="text" id="description" name="description" placeholder="Expense Description" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="amount">Amount:</label>
+                    <div class="control">
+                        <input class="input" type="number" id="amount" name="amount" step="1" placeholder="Expense Amount" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="date">Date:</label>
+                    <div class="control">
+                      <input class="input is-fullwidth custom-date-picker" type="date" id="date" name="date" required>
+                    </div>
+                  </div>
+                <div class="field">
+                    <label class="label" for="category">Category:</label>
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Food">Food</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <footer class="modal-card-foot">
+            <button id="submitExpense" form="expenseForm" type="submit" class="button is-primary">Save Expense</button>
+            <button class="button" id="cancelDialog">Cancel</button>
+        </footer>
     </div>
 </div>
+
+<script>
+    document.getElementById('openExpenseDialog').addEventListener('click', function() {
+        openExpenseDialog('Add Expense', '', '', '', '', '', '{{ url_for("main.add_expense") }}');
+    });
+
+    document.getElementById('closeDialog').addEventListener('click', closeExpenseDialog);
+    document.getElementById('cancelDialog').addEventListener('click', closeExpenseDialog);
+
+    function closeExpenseDialog() {
+        document.getElementById('expenseDialog').classList.remove('is-active');
+        document.getElementById('expenseForm').reset();
+    }
+
+    function openExpenseDialog(title, id, description, amount, date, category, actionUrl) {
+        
+        document.getElementById('dialogTitle').textContent = title;
+        document.getElementById('expenseId').value = id;
+        document.getElementById('description').value = description;
+        document.getElementById('amount').value = amount;
+        document.getElementById('date').value = date;
+        document.getElementById('category').value = category;
+        document.getElementById('expenseForm').action = actionUrl;
+        document.getElementById('expenseDialog').classList.add('is-active');
+        document.getElementById('categoryFilter').value = '{{ filters.get("category", "") }}';
+        document.getElementById('startDateFilter').value = '{{ filters.get("start_date", "") }}';
+        document.getElementById('endDateFilter').value = '{{ filters.get("end_date", "") }}';
+        document.getElementById('minAmountFilter').value = '{{ filters.get("min_amount", "") }}';
+        document.getElementById('maxAmountFilter').value = '{{ filters.get("max_amount", "") }}';
+        document.getElementById('currentPage').value = '{{ page }}';
+        document.getElementById('pageSize').value = '{{ size }}';
+    }
+
+    function editExpense(expenseId, description, category, date, amount) {
+        openExpenseDialog('Edit Expense', expenseId, description, amount, date, category, '{{ url_for("main.edit_expense") }}');
+    }
+
+    function deleteExpense(expenseId) {
+      
+    }
+</script>

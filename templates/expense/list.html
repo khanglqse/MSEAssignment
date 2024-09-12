@@ -1,94 +1,184 @@
 {% extends "base.html" %}
 
 {% block content %}
-<button id="openExpenseDialog" class="btn">Add Expense</button>
-{% include 'expense/add.html' %}
-    <h2>Recent Expenses</h2>
-    {% if expenses %}
-    <form method="get" action="{{ url_for('main.expenses') }}">
-        <label for="size">Page size:</label>
-        <select name="size" id="size" onchange="this.form.submit()">
-            <option value="5" {% if size == 5 %}selected{% endif %}>5</option>
-            <option value="10" {% if size == 10 %}selected{% endif %}>10</option>
-            <option value="20" {% if size == 20 %}selected{% endif %}>20</option>
-            <option value="50" {% if size == 50 %}selected{% endif %}>50</option>
-        </select>
-    </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in expenses %}
-                    <tr>
-                        <td>{{ expense[1] }}</td>
-                        <td>{{ expense[2] }}</td>
-                        <td>{{ expense[3] }}</td>
-                        <td>{{ expense[4] }}</td>
-                        <td>{{ expense[5] }}</td>
-                        <td>{{ expense[6] }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <!-- Previous Page Link -->
-                    {% if page > 1 %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('main.expenses', page=page-1, page_size=page_size) }}">Previous</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                    {% endif %}
-    
-                    <!-- Page Numbers -->
-                    {% for p in range(start_page, end_page + 1) %}
-                        <li class="page-item {% if p == page %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('main.expenses', page=p, size=size) }}">{{ p }}</a>
-                        </li>
-                    {% endfor %}
-    
-                    <!-- Next Page Link -->
-                    {% if page < total_pages %}
-                        <li class="page-item">
-                            <a class="page-link" href="{{ url_for('main.expenses', page=page+1, size=size) }}">Next</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <a class="page-link">Next</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <h1 class="title has-text-centered is-3 mb-6">My Expenses</h1>
+        
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h2 class="title is-4">Recent Expenses</h2>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+              <button id="openExpenseDialog" class="button is-primary">
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span>Add Expense</span>
+              </button>
+            </div>
+          </div>
         </div>
-    {% else %}
-        <p>No expenses recorded.</p>
-    {% endif %}
+
+        {% include 'expense/add.html' %}
+        
+       
+          <form method="get" action="{{ url_for('main.expenses') }}" class="mb-5">
+            
+            <div class="field is-justify-content-space-between is-grouped is-fullwidth">
+                <div class="control">
+                    <div class="select is-rounded">
+                      <select name="size" id="size" onchange="this.form.submit()">
+                        <option value="5" {% if size == 5 %}selected{% endif %}>5 per page</option>
+                        <option value="10" {% if size == 10 %}selected{% endif %}>10 per page</option>
+                        <option value="20" {% if size == 20 %}selected{% endif %}>20 per page</option>
+                        <option value="50" {% if size == 50 %}selected{% endif %}>50 per page</option>
+                      </select>
+                    </div>
+                  </div>
+                <div class="control">
+                  <div class="select">
+                    <select name="category">
+                        <option value="">Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <input class="input" type="date" name="start_date" value="{{ filters.start_date }}" placeholder="Start Date">
+                </div>
+                <div class="control">
+                  <input class="input" type="date" name="end_date" value="{{ filters.end_date }}" placeholder="End Date">
+                </div>
+                <div class="control">
+                  <input class="input" type="number" step="10000" name="min_amount" placeholder="Min Amount" value="{{ filters.min_amount }}">
+                </div>
+                <div class="control">
+                  <input class="input" type="number" step="10000" name="max_amount" placeholder="Max Amount" value="{{ filters.max_amount }}">
+                </div>
+                
+            </div>
+            <div class="control is-flex is-justify-content-flex-end">
+                <button type="submit" class="button is-info">Apply</button>
+            </div>
+            <nav class="pagination is-centered mt-6" role="navigation" aria-label="pagination">
+                <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size) }}"{% else %}disabled{% endif %}>Previous</a>
+                <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size) }}"{% else %}disabled{% endif %}>Next page</a>
+                <ul class="pagination-list">
+                  {% for p in range(start_page, end_page + 1) %}
+                    <li>
+                      <a class="pagination-link {% if p == page %}is-current{% endif %}" href="{{ url_for('main.expenses', page=p, size=size) }}">{{ p }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </nav>
+            <div class="table-container">
+              <table class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                      <th>
+                        Id
+                      </th>
+                      <th>
+                        <a href="{{ url_for('main.expenses', sort_by='category', sort_order='desc' if sort_by == 'category' and sort_order == 'asc' else 'asc', page=page, size=size, **filters) }}">
+                          Category
+                        </a>
+                      </th>
+                      <th>
+                        <a href="{{ url_for('main.expenses', sort_by='amount', sort_order='desc' if sort_by == 'amount' and sort_order == 'asc' else 'asc', page=page, size=size, **filters) }}">
+                          Amount
+                        </a>
+                      </th>
+                      <th>
+                        <a href="{{ url_for('main.expenses', sort_by='date', sort_order='desc' if sort_by == 'date' and sort_order == 'asc' else 'asc', page=page, size=size, **filters) }}">
+                            Date
+                          </a>
+                      </th>
+                      <th>
+                        <a href="{{ url_for('main.expenses', sort_by='description', sort_order='desc' if sort_by == 'description' and sort_order == 'asc' else 'asc', page=page, size=size, **filters) }}">
+                          Description
+                        </a>
+                      </th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  
+                  
+                {% if expenses %}
+                <tbody>
+                  {% for expense in expenses %}
+                    <tr>
+                      <td>{{ expense[0] }}</td>
+                     
+                      <td>
+                        <strong class="has-text-success">{{ expense[3] }}</strong>
+                      </td>
+                      <td>
+                        <span class="tag is-primary is-light">{{ expense[2] }}</span>
+                      </td>
+                      <td>{{ expense[5] }}</td>
+
+                      <td>{{ expense[4] }}</td>
+                      <td>
+                        <div class="buttons are-small">
+                            <button type="button" class="button is-info is-light" onclick="editExpense('{{ expense[0] }}', '{{ expense[4] }}', '{{ expense[3] }}', '{{ expense[5] }}', '{{ expense[2] }}')">Edit</button>
+                            <button type="button" class="button is-danger is-light" onclick="deleteExpense('{{ expense[0] }}')">Delete</button>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  {% else %}
+                  <td colspan="5" class="has-text-centered is-centered is-size-4 is-bold">No records</td>
+                </div>
+            {% endif %}
+                </tbody>
+              </table>
+            </div>
+
+            <nav class="pagination is-centered mt-6" role="navigation" aria-label="pagination">
+              <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size) }}"{% else %}disabled{% endif %}>Previous</a>
+              <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size) }}"{% else %}disabled{% endif %}>Next page</a>
+              <ul class="pagination-list">
+                {% for p in range(start_page, end_page + 1) %}
+                  <li>
+                    <a class="pagination-link {% if p == page %}is-current{% endif %}" href="{{ url_for('main.expenses', page=p, size=size) }}">{{ p }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </nav>
+          
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
-    document.getElementById('openExpenseDialog').addEventListener('click', function() {
-        document.getElementById('expenseDialog').style.display = 'flex';
-    });
+  document.getElementById('openExpenseDialog').addEventListener('click', function() {
+    document.getElementById('expenseDialog').classList.add('is-active');
+  });
 
-    document.getElementById('closeDialog').addEventListener('click', function() {
-        document.getElementById('expenseDialog').style.display = 'none';
-    });
+  document.getElementById('closeDialog').addEventListener('click', function() {
+    document.getElementById('expenseDialog').classList.remove('is-active');
+  });
 
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('expenseDialog')) {
-            document.getElementById('expenseDialog').style.display = 'none';
-        }
-    };
+  document.getElementById('cancelDialog').addEventListener('click', function() {
+    document.getElementById('expenseDialog').classList.remove('is-active');
+  });
+
+  window.onclick = function(event) {
+    var modal = document.getElementById('expenseDialog');
+    if (event.target === modal) {
+      modal.classList.remove('is-active');
+    }
+  };
 </script>
-
 {% endblock %}

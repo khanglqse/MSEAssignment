@@ -3,31 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-
+    <title>{% block title %}Your Site Title{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <header>
-        <nav class="flex content-between">
-            {% if current_user.is_authenticated %}
-            <div>
-                <a href="{{ url_for('main.dashboard') }}">Home</a>
-            </div>
-                <div>
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
+                <strong>Your Logo</strong>
+            </a>
 
-                    <span>hello {{current_user.username}}</span>
-                    <a href="{{ url_for('main.logout') }}">Logout</a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
+                    Home
+                </a>
+
+                <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
+                    About
+                </a>
+
+                <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
+                    Profile
+                </a>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <span class="button is-light">
+                            Hi {{ current_user.username }}
+                        </span>
+                        <a class="button is-primary" href="{{ url_for('main.logout') }}">
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
                 </div>
-            {% endif %}
-        </nav>
-    </header>
+            </div>
+        </div>
+    </nav>
+
     <main>
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer>
-        <p>&copy; 2024 My Pig Save</p>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+               2024 Pig Save. All rights reserved.
+            </p>
+        </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all "navbar-burger" elements
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+            // Add a click event on each of them
+            $navbarBurgers.forEach( el => {
+                el.addEventListener('click', () => {
+                    // Get the target from the "data-target" attribute
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
