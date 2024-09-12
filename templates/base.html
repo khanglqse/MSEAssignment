@@ -8,9 +8,16 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="flex content-between">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.logout') }}">Logout</a>
+            <div>
+                <a href="{{ url_for('main.dashboard') }}">Home</a>
+            </div>
+                <div>
+
+                    <span>hello {{current_user.username}}</span>
+                    <a href="{{ url_for('main.logout') }}">Logout</a>
+                </div>
             {% endif %}
         </nav>
     </header>

@@ -5,6 +5,7 @@ from database import get_db_connection
 from models.user import User
 from models.expense import Expense
 from functions.auth import auth_user
+import math
 
 routes = Blueprint('main', __name__)
 
@@ -66,8 +67,33 @@ def dashboard():
 @login_required
 def expenses():
     user_id = current_user.id
-    expenses = Expense.getAllExpense(user_id)
-    return render_template('expense/list.html', expenses=expenses)
+    page = request.args.get('page', 1, type=int)
+    size = request.args.get('size', 5, type=int)
+    expenses,total_expenses  = Expense.getAllExpense(user_id, page, size)
+    total_pages = math.ceil(total_expenses / size)
+    max_pages_displayed = 4
+    math
+    start_page = max(1, page - 2)
+    end_page = min(total_pages, start_page + max_pages_displayed - 1)
+
+    if end_page - start_page < max_pages_displayed - 1:
+        start_page = max(1, end_page - max_pages_displayed + 1)
+
+    return render_template('expense/list.html', 
+                           expenses=expenses,
+                           page = page,
+                           total_pages = total_pages,
+                           end_page= end_page,
+                           start_page = start_page,
+                           size = size)
+
+@routes.route('/add_expense', methods=['POST'])
+def add_expense():
+    description = request.form['description']
+    amount = request.form['amount']
+    date = request.form['date']
+    Expense.add_expense(current_user.id, description, amount, date)
+    return redirect(url_for('main.expenses'))
 
 @routes.route('/logout')
 @login_required

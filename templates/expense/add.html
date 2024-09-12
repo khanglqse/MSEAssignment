@@ -1,0 +1,19 @@
+<!-- Expense Dialog -->
+<div id="expenseDialog" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span id="closeDialog" class="close">&times;</span>
+        <h2>Add Expense</h2>
+        <form id="expenseForm" method="post" action="{{ url_for('main.add_expense') }}">
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required>
+
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" required>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <button type="submit" class="btn">Add Expense</button>
+        </form>
+    </div>
+</div>
