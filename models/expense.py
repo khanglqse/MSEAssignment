@@ -97,6 +97,7 @@ class Expense:
         WHERE strftime('%m', date) = ? and user_id = ?
         """, (now.strftime('%m'), user_id))
         total_month = '{:,.0f}'.format(cursor.fetchone()[0])
+        
         start_of_week = (now - timedelta(days=now.weekday())).strftime('%Y-%m-%d')
         cursor.execute("""
             SELECT SUM(amount) AS total
@@ -104,14 +105,13 @@ class Expense:
             WHERE date >= ?
         """, (start_of_week,))
         total_week = '{:,.0f}'.format(cursor.fetchone()[0])
-        print(total_week)
         cursor.execute("""
         SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total
         FROM expenses
         WHERE strftime('%Y', date) = '2024' and user_id = ?
         GROUP BY month
         ORDER BY month
-        """), (user_id)
+        """, (user_id,))
         line_data = [{'x': f'{row[0]}-01', 'y': row[1]} for row in cursor.fetchall()]
 
         cursor.execute("""
@@ -120,7 +120,7 @@ class Expense:
             where user_id = ?
             GROUP BY category
             ORDER BY total DESC
-        """), (user_id)
+        """, (user_id,))
 
         pie_data = [{'name': row[0], 'value': row[1]} for row in  cursor.fetchall()]
         conn.close()
