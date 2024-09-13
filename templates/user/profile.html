@@ -1,0 +1,57 @@
+{% extends "base.html" %} 
+{% block css %}
+
+<style>
+    .profile-picture {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 3px solid #00d1b2; /* Adds a border to the profile picture */
+        margin-bottom: 10px;
+    }
+   
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">My Profile</h1>
+        <div class="profile-header">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-picture">
+                    <h2 class="title">Khang</h2>
+                    <p class="subtitle">@kunwalle</p>
+                </div>
+            </div>
+        </div>
+        <div class="profile-info">
+            <div class="columns">
+                <div class="column is-half">
+                    <div class="box">
+                        <h3 class="subtitle">Basic Information</h3>
+                        <p><strong>Email:</strong> khang@mse.fpt.com</p>
+                        <p><strong>Phone:</strong> (123) 4567890</p>
+                        <p><strong>Address:</strong> FPT An Don</p>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="box">
+                        <h3 class="subtitle">About Me</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam imperdiet euismod urna, a tempus libero commodo eget. Integer vehicula libero in dui venenatis, eu fermentum orci vehicula.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="profile-info">
+            <div class="box">
+                <h3 class="subtitle">Contact Information</h3>
+                <p><strong>Email:</strong> <a href="mailto:john.doe@example.com">john.doe@example.com</a></p>
+                <p><strong>Phone:</strong> <a href="tel:+1234567890">(123) 456-7890</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

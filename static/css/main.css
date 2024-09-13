@@ -1,7 +1,23 @@
   .custom-date-picker {
-    background-color: #f5f5f5; /* Light grey background */
-    border: 1px solid #ddd; /* Light border */
-    border-radius: 4px; /* Rounded corners */
-    padding: 0.5rem; /* Padding inside the input */
-    font-size: 1rem; /* Font size */
+    background-color: #f5f5f5; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    padding: 0.5rem; 
+    font-size: 1rem; 
   }
+  .hero {
+    background-image: url('../images/background.jpg');
+    height: 200;
+    background-size: cover;
+    background-position: center;
+}
+.hero-body {
+    background-color: rgb(181 181 181 / 60%);
+}
+.title, .subtitle {
+    color: white !important;
+}
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}

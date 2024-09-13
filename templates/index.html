@@ -1,17 +1,102 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome to PigSave</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.min.css') }}">
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pig Save</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
+<nav class="navbar is-transparent">
     <div class="container">
-        <h1>Welcome to PigSave</h1>
-        <p>The ultimate solution for managing your finances with ease and efficiency. Designed to help you take control of your spending, PigSave offers a user-friendly interface that makes tracking your expenses a breeze.
-        </p>
-        <a href="{{ url_for('main.login') }}" class="btn">Login</a>
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Expenses Tracker Logo" width="150" height="80">
+            </a>
+            <div class="navbar-burger" data-target="navbarMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div id="navbarMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary" href="{{ url_for('auth.register') }}">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light" href="{{ url_for('auth.login') }}">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</nav>
+
+<section class="hero is-halfheight-with-navbar">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title is-1">
+                Take Control of Your Finances
+            </h1>
+            <h2 class="subtitle is-3">
+                Track, analyze, and optimize your expenses with ease
+            </h2>
+            <a href="{{ url_for('auth.register') }}" class="button is-primary is-large">Get Started</a>
+        </div>
+    </div>
+</section>
+
+<div id="features" class="p-4">
+    <div class="container p-4">
+        <h2 class="title is-2 has-text-centered">Features</h2>
+        <div class="columns is-multiline">
+            <div class="column is-4">
+                <div class="has-text-centered">
+                    <span class="icon feature-icon has-text-primary">
+                        <i class="fas fa-chart-pie"></i>
+                    </span>
+                    <h3 class="has-text-weight-bold is-5 m-b-2">Categorization</h3>
+                    <p>Categorize your expenses</p>
+                </div>
+            </div>
+            <div class="column is-4">
+                <div class="has-text-centered">
+                    <span class="icon feature-icon has-text-primary">
+                        <i class="fas fa-mobile-alt"></i>
+                    </span>
+                    <h3 class="has-text-weight-bold is-5 m-b-2">Mobile App</h3>
+                    <p>Coming Soon</p>
+                </div>
+            </div>
+            <div class="column is-4">
+                <div class="has-text-centered">
+                    <span class="icon feature-icon has-text-primary">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <h3 class="has-text-weight-bold is-5 m-b-2">Secure</h3>
+                    <p>Your financial data is protected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="about" class="section has-background-light">
+    <div class="container">
+        <h2 class="has-text-weight-bold is-size-2 has-text-centered">About Us</h2>
+        <p class="has-text-centered is-size-6">
+            We are humans. We don’t make much (trust us, we've checked). We overspend, we fund games. We got tired of watching our wallets wet (look like it just cried). We think about life, we need to responsible as adult, we found a solution. Boom! PigSave was born. Now, we save, we track, we can stop asking wifes for breakfast and morning coffee.
+        </p>
+    </div>
+</section>
+
+
 </body>
-</html>

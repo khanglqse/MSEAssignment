@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from config import Config
-from routes import routes as main_routes
+from routes import routes as main_routes, auth_routes
 from core.scss_complier import compile_scss
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,6 +16,7 @@ def load_user(id):
 
 # compile_scss()
 app.register_blueprint(main_routes)
+app.register_blueprint(auth_routes)
 
 if __name__ == '__main__':
     app.run(debug=True)

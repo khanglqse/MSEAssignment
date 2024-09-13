@@ -1,8 +1,121 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 
 {% block content %}
-    hello {{user.username}}
+<section class="section">
+  <div class="container">
+    <h1 class="title">Expense Report</h1>
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          <h2 class="subtitle has-text-danger">Total This Year</h2>
+          <p id="totalYear">{{total_year}}</p>
+        </div>
+      </div>
 
-    <a href="{{ url_for('main.expenses') }}" class="btn">My Expenses!</a>
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          <h2 class="subtitle has-text-primary">Total This Month</h2>
+          <p id="totalMonth">{{total_month}}</p>
+        </div>
+      </div>
 
+      <div class="column is-one-third">
+        <div class="box has-text-centered">
+          <h2 class="subtitle has-text-info">Total This Week</h2>
+          <p id="totalWeek">{{total_week}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-vcentered">
+      <div class="column is-half">
+        <div class="box" style="height: 600px">
+          <div style="height: 400px;">
+            <h2 class="subtitle">Expenses Over Time</h2>
+            <canvas id="lineChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-half">
+        <div class="box " style="height: 600px">
+          <div style="height: 400px;">
+            <h2 class="subtitle">Expense Distribution</h2>
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %} {% block js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+<script>
+
+  // Line Chart Data
+
+  const lineData = {{ line_data | tojson }};
+
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: lineData.map(data => data.x),  // Dates
+                datasets: [{
+                    label: 'Total Expenses',
+                    data: lineData.map(data => data.y),  // Values
+                    // borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'time',  // Use time scale
+                        time: {
+                            unit: 'month',  // Adjust as needed (day, week, month, etc.)
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+  const pieData = {{ pie_data | tojson }};
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const pieChart = new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+          labels: pieData.map(data => data.name),
+          datasets: [{
+              data: pieData.map(data => data.value),
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 2
+          }]
+      },
+      options: {
+          responsive: true
+      }
+  });
+</script>
 {% endblock %}

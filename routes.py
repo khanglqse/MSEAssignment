@@ -8,12 +8,13 @@ from functions.auth import auth_user
 import math
 
 routes = Blueprint('main', __name__)
+auth_routes = Blueprint('auth', __name__)
 
 @routes.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-@routes.route('/register', methods=['GET', 'POST'])
+@auth_routes.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -37,13 +38,13 @@ def register():
                            (username, hashed_password))
             conn.commit()
             flash('Registration successful! You can now log in.')
-            return redirect(url_for('main.login'))
+            return redirect(url_for('auth.login'))
         
         conn.close()
 
     return render_template('auth/register.html')
 
-@routes.route('/login', methods=['GET', 'POST'])
+@auth_routes.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -57,11 +58,16 @@ def login():
 
     return render_template('auth/login.html')
 
+@routes.route('/profile')
+@login_required
+def profile():
+    return render_template('user/profile.html')
 
 @routes.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user = current_user)
+    line_data, pie_data, total_week, total_month, total_year = Expense.get_report(current_user.id)
+    return render_template('dashboard.html', user = current_user, line_data = line_data, pie_data = pie_data, total_week = total_week, total_month = total_month, total_year = total_year)
 
 @routes.route('/expenses')
 @login_required
@@ -69,8 +75,8 @@ def expenses():
     user_id = current_user.id
     page = request.args.get('page', 1, type=int)
     size = request.args.get('size', 5, type=int)
-    sort_by = request.args.get('sort_by', 'date')  # Default to sorting by date
-    sort_order = request.args.get('sort_order', 'asc')  # Default to ascending order
+    sort_by = request.args.get('sort_by', 'date') 
+    sort_order = request.args.get('sort_order', 'asc')  
 
     filters = {key: request.args.get(key) for key in ['category', 'start_date', 'end_date', 'min_amount', 'max_amount']}
     expenses, total_expenses = Expense.get_expenses(user_id, page, size, filters, sort_by, sort_order)
@@ -117,4 +123,4 @@ def edit_expense():
 def logout():
     logout_user()
     flash('You have been logged out.')
-    return redirect(url_for('main.login'))
+    return redirect(url_for('auth.login'))

@@ -6,14 +6,7 @@
     <title>{% block title %}Your Site Title{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    
-    {% block css %}{% endblock %}
-    <style>
-        .filter-form .control {
-            margin-right: 0 !important;
-            margin-left: 0;
-            }
-    </style>
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
@@ -35,8 +28,8 @@
                     Home
                 </a>
 
-                <a class="navbar-item" href="{{ url_for('main.expenses') }}">
-                    My Expenses
+                <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
+                    About
                 </a>
 
                 <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
@@ -93,6 +86,6 @@
         });
     </script>
 
-    {% block js %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

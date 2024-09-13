@@ -1,25 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <h1>Login Page</h1>
-    <form method="POST" action="/login">
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
-        <input type="submit" value="Login">
-    </form>
-    <a href="{{ url_for('main.register') }}" class="btn">Register!</a>
-
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+<section class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <form action="{{ url_for('auth.login') }}" method="POST" class="box">
+            <h1 class="title has-text-centered">Login</h1>
+            
+            <div class="field">
+              <label for="username" class="label">Username</label>
+              <div class="control has-icons-left">
+                <input type="text" name="username" id="username" placeholder="e.g. johndoe" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+            </div>
+            
+            <div class="field">
+              <label for="password" class="label">Password</label>
+              <div class="control has-icons-left">
+                <input type="password" name="password" id="password" placeholder="********" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            
+            <div class="field">
+              <button class="button is-success is-fullwidth">
+                Login
+              </button>
+            </div>
+          </form>
+          
+          <p class="has-text-centered mt-4">
+            Don't have an account? 
+            <a href="{{ url_for('auth.register') }}" class="has-text-link">Register here</a>
+          </p>
+          
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="notification is-{{ category }} mt-4">
+                  <button class="delete"></button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </body>
-</html>

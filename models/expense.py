@@ -1,5 +1,5 @@
 import sqlite3
-
+from datetime import datetime, timedelta
 class Expense:
     def __init__(self, id, user_id, amount, category, description, date):
         self.id = id
@@ -80,3 +80,52 @@ class Expense:
                        (amount, category, description, date, expense_id))
         conn.commit()
         conn.close()
+    def get_report(user_id):
+        conn = sqlite3.connect('pig_save.db')
+        cursor = conn.cursor()
+        now = datetime.now()
+        cursor.execute("""
+            SELECT SUM(amount) AS total
+            FROM expenses
+            WHERE strftime('%Y', date) = ?
+        """, (now.strftime('%Y'),))
+        total_year = '{:,.0f}'.format(cursor.fetchone()[0])
+
+        cursor.execute("""
+        SELECT SUM(amount) AS total
+        FROM expenses
+        WHERE strftime('%m', date) = ?
+        """, (now.strftime('%m'),))
+        total_month = '{:,.0f}'.format(cursor.fetchone()[0])
+        start_of_week = (now - timedelta(days=now.weekday())).strftime('%Y-%m-%d')
+        cursor.execute("""
+            SELECT SUM(amount) AS total
+            FROM expenses
+            WHERE date >= ?
+        """, (start_of_week,))
+        total_week = '{:,.0f}'.format(cursor.fetchone()[0])
+        print(total_week)
+        cursor.execute("""
+        SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total
+        FROM expenses
+        WHERE strftime('%Y', date) = '2024'
+        GROUP BY month
+        ORDER BY month
+        """)
+        line_data = [{'x': f'{row[0]}-01', 'y': row[1]} for row in cursor.fetchall()]
+
+        cursor.execute("""
+            SELECT category, SUM(amount) as total
+            FROM expenses
+            GROUP BY category
+            ORDER BY total DESC
+        """)
+
+        pie_data = [{'name': row[0], 'value': row[1]} for row in  cursor.fetchall()]
+        print(pie_data)
+        conn.close()
+        return line_data, pie_data, total_week, total_month, total_year
+    def get_connection():
+        conn = sqlite3.connect('pig_save.db')
+        cursor = conn.cursor()
+        return conn, cursor

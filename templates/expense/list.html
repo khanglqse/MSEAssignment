@@ -28,9 +28,9 @@
         {% include 'expense/add.html' %}
         
        
-          <form method="get" action="{{ url_for('main.expenses') }}" class="mb-5">
+          <form method="get" action="{{ url_for('main.expenses') }}" class="mb-5 filter-form">
             
-            <div class="field is-justify-content-space-between is-grouped is-fullwidth">
+            <div class="field is-grouped is-justify-content-space-between is-grouped-multiline is-flex-wrap-wrap">
                 <div class="control">
                     <div class="select is-rounded">
                       <select name="size" id="size" onchange="this.form.submit()">
