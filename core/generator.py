@@ -2,7 +2,6 @@ import sqlite3
 import random
 from datetime import datetime, timedelta
 
-# Connect to your SQLite database
 conn = sqlite3.connect('../pig_save.db')
 cursor = conn.cursor()
 
@@ -12,11 +11,10 @@ def generate_random_data():
     amount = random.randrange(1000, 50000001, 1000)
     category = random.choice(categories)
     description = random.choice(descriptions)
-    date = (datetime.now() - timedelta(days=random.randint(1, 365))).strftime('%Y-%m-%d')  # Random date within the past year
+    date = (datetime.now() - timedelta(days=random.randint(1, 365))).strftime('%Y-%m-%d') 
     print('called!!')
     return (1, amount, category, description, date)
 
-# Insert 500 random records
 
 for _ in range(500):
     data = generate_random_data()

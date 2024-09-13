@@ -70,7 +70,7 @@
             <div class="control is-flex is-justify-content-flex-end">
                 <button type="submit" class="button is-info">Apply</button>
             </div>
-            <nav class="pagination is-centered mt-6" role="navigation" aria-label="pagination">
+            <nav class="pagination is-centered mt-6" role="navigation">
                 <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size) }}"{% else %}disabled{% endif %}>Previous</a>
                 <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size) }}"{% else %}disabled{% endif %}>Next page</a>
                 <ul class="pagination-list">
@@ -144,7 +144,7 @@
               </table>
             </div>
 
-            <nav class="pagination is-centered mt-6" role="navigation" aria-label="pagination">
+            <nav class="pagination is-centered mt-6" role="navigation" >
               <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size) }}"{% else %}disabled{% endif %}>Previous</a>
               <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size) }}"{% else %}disabled{% endif %}>Next page</a>
               <ul class="pagination-list">

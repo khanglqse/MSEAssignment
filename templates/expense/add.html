@@ -3,7 +3,7 @@
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title" id="dialogTitle">Add Expense</p>
-            <button id="closeDialog" class="delete" aria-label="close"></button>
+            <button id="closeDialog" class="delete" ></button>
         </header>
         <section class="modal-card-body">
             <form id="expenseForm" method="post" action="{{ url_for('main.add_expense') }}">
@@ -30,7 +30,7 @@
                 <div class="field">
                     <label class="label" for="date">Date:</label>
                     <div class="control">
-                      <input class="input is-fullwidth custom-date-picker" type="date" id="date" name="date" required>
+                      <input class="input is-fullwidth custom-date-picker" type="date" id="dateAdd" name="date" required>
                     </div>
                   </div>
                 <div class="field">
@@ -93,6 +93,15 @@
         openExpenseDialog('Edit Expense', expenseId, description, amount, date, category, '{{ url_for("main.edit_expense") }}');
     }
 
+    document.querySelector('form[action="/add_expense"]').addEventListener('submit', function(event) {
+        showToast('Expense added successfully!', 'success');
+    });
+    // load current date
+    document.addEventListener('DOMContentLoaded', (event) => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dateAdd').value = today;
+            console.log('as')
+        });
     function deleteExpense(expenseId) {
       
     }

@@ -108,6 +108,12 @@ def add_expense():
     filters = {key: request.form.get(key) for key in ['category', 'start_date', 'end_date', 'min_amount', 'max_amount']}
     Expense.add_expense(current_user.id, amount, category, description, date)
     return redirect(url_for('main.expenses', page=page, size=size, **filters))
+
+@routes.route('/family')
+@login_required
+def family():
+    return render_template('family.html')
+
 @routes.route('/edit_expense', methods=['POST'])
 def edit_expense():
     expense_id = request.form['expenseId']

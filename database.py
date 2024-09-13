@@ -8,7 +8,7 @@ def get_db_connection():
 def create_tables():
     conn = get_db_connection()
     cursor = conn.cursor()
-    # Create users table
+    # usr
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,7 +16,8 @@ def create_tables():
             password TEXT NOT NULL
         )
     ''')
-    # Create expenses table
+
+    # expense
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS expenses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

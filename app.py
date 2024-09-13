@@ -14,7 +14,6 @@ def load_user(id):
     from models.user import User
     return User.getUser(id)
 
-# compile_scss()
 app.register_blueprint(main_routes)
 app.register_blueprint(auth_routes)
 

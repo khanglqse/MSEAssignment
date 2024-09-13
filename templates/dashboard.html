@@ -53,7 +53,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 <script>
 
-  // Line Chart Data
 
   const lineData = {{ line_data | tojson }};
 
@@ -61,11 +60,9 @@
         const lineChart = new Chart(lineCtx, {
             type: 'line',
             data: {
-                labels: lineData.map(data => data.x),  // Dates
-                datasets: [{
+                labels: lineData.map(data => data.x),  
                     label: 'Total Expenses',
-                    data: lineData.map(data => data.y),  // Values
-                    // borderColor: 'rgba(75, 192, 192, 1)',
+                    data: lineData.map(data => data.y),  
                     borderWidth: 2,
                     fill: false
                 }]
@@ -74,9 +71,9 @@
                 responsive: true,
                 scales: {
                     x: {
-                        type: 'time',  // Use time scale
+                        type: 'time',  
                         time: {
-                            unit: 'month',  // Adjust as needed (day, week, month, etc.)
+                            unit: 'month', 
                         }
                     },
                     y: {

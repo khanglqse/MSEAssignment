@@ -1,0 +1,54 @@
+{% extends "base.html" %} 
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title has-text-centered">Family Expenses Management</h1>
+
+        <div class="box">
+            <h2 class="subtitle">Add Family Member</h2>
+            <form action="/add_member" method="post">
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input class="input" type="text" name="name" placeholder="Enter member username" required>
+                    </div>
+                </div>
+                
+                <div class="control">
+                    <button class="button is-primary" type="submit">Send invitation</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="box">
+            <h2 class="subtitle">Family Members Overview</h2>
+            <table  class="table is-striped is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                        <th a>Name</th>
+                        <th>Total Spend Today</th>
+                        <th>Spend This Week</th>
+                        <th>Spend This Month</th>
+                        <th>Current Location</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td ><a class="is-link" href="/profile">Tét</a></td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>NA</td>
+                    <td>
+                        <div class="buttons are-small">
+                            <button type="button" class="button is-danger is-light" onclick="">Delete</button>
+                        </div>
+                      </td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
