@@ -60,7 +60,8 @@
         const lineChart = new Chart(lineCtx, {
             type: 'line',
             data: {
-                labels: lineData.map(data => data.x),  
+                labels: lineData.map(data => data.x), 
+                datasets: [{
                     label: 'Total Expenses',
                     data: lineData.map(data => data.y),  
                     borderWidth: 2,
