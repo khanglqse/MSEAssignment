@@ -87,15 +87,15 @@ class Expense:
         cursor.execute("""
             SELECT SUM(amount) AS total
             FROM expenses
-            WHERE strftime('%Y', date) = ?
-        """, (now.strftime('%Y'),))
+            WHERE strftime('%Y', date) = ? and user_id = ?
+        """, (now.strftime('%Y'), user_id))
         total_year = '{:,.0f}'.format(cursor.fetchone()[0])
 
         cursor.execute("""
         SELECT SUM(amount) AS total
         FROM expenses
-        WHERE strftime('%m', date) = ?
-        """, (now.strftime('%m'),))
+        WHERE strftime('%m', date) = ? and user_id = ?
+        """, (now.strftime('%m'), user_id))
         total_month = '{:,.0f}'.format(cursor.fetchone()[0])
         start_of_week = (now - timedelta(days=now.weekday())).strftime('%Y-%m-%d')
         cursor.execute("""
@@ -108,21 +108,21 @@ class Expense:
         cursor.execute("""
         SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total
         FROM expenses
-        WHERE strftime('%Y', date) = '2024'
+        WHERE strftime('%Y', date) = '2024' and user_id = ?
         GROUP BY month
         ORDER BY month
-        """)
+        """), (user_id)
         line_data = [{'x': f'{row[0]}-01', 'y': row[1]} for row in cursor.fetchall()]
 
         cursor.execute("""
             SELECT category, SUM(amount) as total
             FROM expenses
+            where user_id = ?
             GROUP BY category
             ORDER BY total DESC
-        """)
+        """), (user_id)
 
         pie_data = [{'name': row[0], 'value': row[1]} for row in  cursor.fetchall()]
-        print(pie_data)
         conn.close()
         return line_data, pie_data, total_week, total_month, total_year
     def get_connection():
