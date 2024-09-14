@@ -1,21 +1,25 @@
+# Expense Management Application
+
 ### Overview
-This application is build base on Python, Flask SQLite. It use to manage user expenses to control the money. 
+This application is built using Python, Flask, and SQLite. It is designed to help manage user expenses and control finances effectively.
 
-### Feature
-# Manage expense
-# Profile
-# Report
-# Budget control
-# Family share
-# Multiple language
-# Location share (incoming)
+### Features
+- **Manage Expense**: Track and manage your expenses.
+- **Profile**: View and update user profiles.
+- **Report**: Generate reports on expenses.
+- **Budget Control**: Set and manage budgets.
+- **Family Share**: Share and manage expenses within a family.
+- **Multiple Languages**: Support for multiple languages.
+- **Location Share (Incoming)**: Share and view location data (feature coming soon).
 
-### How to run?
+### How to Run
+To start the application, run the following command:
+```bash
 python app.py
+```
 
-### How to generate data?
+### How to Generate data
+To generate data, you can specific your data in this file and execute:
+```bash
 cd core
-python generator.py
-note: if you want to specific user and number of expense, go ahead and update your file before execute.
-
-
+python generate.py
