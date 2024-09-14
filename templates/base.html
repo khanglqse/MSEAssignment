@@ -19,35 +19,32 @@
         margin-right: 0 !important;
         margin-left: 0;
       }
-       .toast-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
-    }
-    .toast {
-        background-color: #333;
-        color: #fff;
-        border-radius: 4px;
-        padding: 10px;
-        margin-bottom: 10px;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-    }
-    .toast.show {
-        opacity: 1;
-    }
-    .toast.success {
-        background-color: #48c774;
-    }
-    .toast.error {
-        background-color: #ff3860;
-    }
+      .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            max-width: 300px;
+            display: none;
+        }
+        .toast.show {
+            display: block;
+        }
     </style>
   </head>
   <body>
-    <div id="toastContainer" class="toast-container">
-    </div>
+    <div id="toast-container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                  <div class="toast notification is-{{ category }}">
+                      <button class="delete"></button>
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+  </div>
     <nav
       class="navbar is-primary"
       role="navigation"
@@ -128,28 +125,25 @@
             $target.classList.toggle("is-active");
           });
         });
+
+        var toastElements = document.querySelectorAll('.toast');
+            toastElements.forEach(function (toast) {
+                toast.classList.add('show');
+                // Hide toast after 3 seconds
+                setTimeout(function () {
+                    toast.classList.remove('show');
+                }, 3000);
+            });
+
+            // Close toast on button click
+            document.querySelectorAll('.toast .delete').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    btn.parentElement.classList.remove('show');
+                });
+            });
       });
 
-      function showToast(message, type = 'success') {
-        const toastContainer = document.getElementById('toastContainer');
-        
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerText = message;
-
-        toastContainer.appendChild(toast);
-
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 100);
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toastContainer.removeChild(toast);
-            }, 500);
-        }, 3000); 
-    }
+     
     </script>
 
     {% block js %}{% endblock %}

@@ -1,0 +1,23 @@
+<div class="modal" id="addFamilyModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Add Family</p>
+        <button class="delete" aria-label="close" id="closeModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <form action="/add_family" method="POST">
+          <div class="field">
+            <label class="label">Family Name</label>
+            <div class="control">
+              <input class="input" type="text" name="family_name" placeholder="Enter family name" required>
+            </div>
+          </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" type="submit">Save</button>
+        <button class="button" id="cancelBtn">Cancel</button>
+      </footer>
+      </form>
+    </div>
+  </div>

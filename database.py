@@ -13,6 +13,7 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
+            name TEXT,
             password TEXT NOT NULL
         )
     ''')
@@ -26,7 +27,24 @@ def create_tables():
             category TEXT,
             description TEXT,
             date TEXT NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users (id)
+           FOREIGN KEY (user_id) REFERENCES users (id)
+        )
+    ''')
+    # family
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS family (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            family_name TEXT NOT NULL
+        )
+    ''')
+    # family members
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS family_members (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            family_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            FOREIGN KEY (family_id) REFERENCES family(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ''')
     conn.commit()

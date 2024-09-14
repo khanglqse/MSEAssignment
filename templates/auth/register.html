@@ -7,8 +7,37 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+      .filter-form .control {
+        margin-right: 0 !important;
+        margin-left: 0;
+      }
+      .toast {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            max-width: 300px;
+            display: none;
+        }
+        .toast.show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
+  <div id="toast-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="toast notification is-{{ category }}">
+                    <button class="delete"></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
 <section class="hero is-primary is-fullheight">
   <div class="hero-body">
     <div class="container">
@@ -20,13 +49,21 @@
             <div class="field">
               <label for="username" class="label">Username</label>
               <div class="control has-icons-left">
-                <input type="text" name="username" id="username" placeholder="e.g. johndoe" class="input" required>
+                <input type="text" name="username" id="username" placeholder="Enter your username" class="input" required>
                 <span class="icon is-small is-left">
                   <i class="fas fa-user"></i>
                 </span>
               </div>
             </div>
-            
+            <div class="field">
+              <label for="name" class="label">name</label>
+              <div class="control has-icons-left">
+                <input type="text" name="name" id="name" placeholder="Enter your name" class="input" required>
+                <span class="icon is-small is-left">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+            </div>
             
             <div class="field">
               <label for="password" class="label">Password</label>
@@ -59,17 +96,7 @@
             Already have an account? 
             <a href="{{ url_for('auth.login') }}" class="has-text-link">Login here</a>
           </p>
-          
-          {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="notification is-{{ category }} mt-4">
-                  <button class="delete"></button>
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
+         
         </div>
       </div>
     </div>
@@ -77,3 +104,25 @@
 </section>
 
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+    var toastElements = document.querySelectorAll('.toast');
+        toastElements.forEach(function (toast) {
+            toast.classList.add('show');
+            // Hide toast after 3 seconds
+            setTimeout(function () {
+                toast.classList.remove('show');
+            }, 3000);
+        });
+
+        // Close toast on button click
+        document.querySelectorAll('.toast .delete').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                btn.parentElement.classList.remove('show');
+            });
+        });
+  });
+
+ 
+</script>

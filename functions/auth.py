@@ -11,7 +11,7 @@ def auth_user(username, password):
     conn.close()
 
     if user and check_password_hash(user['password'], password):
-        user_obj = User(id=user['id'], username=user['username'])
+        user_obj = User(id=user['id'], username=user['username'],name=user['name'])
         login_user(user_obj)
         return True
     return False

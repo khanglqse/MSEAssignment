@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db_connection
 from models.user import User
 from models.expense import Expense
+import models.family as Family
 from functions.auth import auth_user
 import math
 
@@ -19,6 +20,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        name = request.form['name']
         confirm_password = request.form['confirm_password']
 
         if password != confirm_password:
@@ -34,8 +36,8 @@ def register():
         if existing_user:
             flash('Username already exists. Please choose another.')
         else:
-            cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', 
-                           (username, hashed_password))
+            cursor.execute('INSERT INTO users (username, name, password) VALUES (?, ?, ?)', 
+                           (username, name, hashed_password))
             conn.commit()
             flash('Registration successful! You can now log in.')
             return redirect(url_for('auth.login'))
@@ -51,10 +53,10 @@ def login():
         password = request.form['password']
 
         if auth_user(username, password):
-            flash('Login successful!')
+            flash('Login successful!', 'success')
             return redirect(url_for('main.dashboard'))
         else:
-            flash('Invalid credentials. Please try again.')
+            flash('Invalid credentials. Please try again.', 'danger')
 
     return render_template('auth/login.html')
 
@@ -107,12 +109,9 @@ def add_expense():
     size = request.form.get('size', 5, type=int)
     filters = {key: request.form.get(key) for key in ['category', 'start_date', 'end_date', 'min_amount', 'max_amount']}
     Expense.add_expense(current_user.id, amount, category, description, date)
+    flash('Expense added successfully!', 'success')
     return redirect(url_for('main.expenses', page=page, size=size, **filters))
 
-@routes.route('/family')
-@login_required
-def family():
-    return render_template('family.html')
 
 @routes.route('/edit_expense', methods=['POST'])
 def edit_expense():
@@ -123,6 +122,26 @@ def edit_expense():
     size = request.form.get('size', 5, type=int)
     Expense.update_expense(expense_id, amount, category, description, date)
     return redirect(url_for('main.expenses', page=page, size=size, **filters))
+
+## family
+@routes.route('/add_family', methods=['POST'])
+def add_family():
+    family_name = request.form['family_name']
+    Family.add_family(family_name, current_user.id)
+    return redirect(url_for('main.family'))
+
+@routes.route('/add_member', methods=['POST'])
+def add_member():
+    name = request.form['member_name']
+    f_id = request.form['family_id']
+    Family.add_family_member(f_id, name)
+    return redirect(url_for('main.family'))
+
+@routes.route('/family')
+@login_required
+def family():
+    families = Family.get_all_family(current_user.id)
+    return render_template('family/family.html', families=families)
 
 @routes.route('/logout')
 @login_required
