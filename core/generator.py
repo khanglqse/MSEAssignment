@@ -13,10 +13,10 @@ def generate_random_data():
     description = random.choice(descriptions)
     date = (datetime.now() - timedelta(days=random.randint(1, 365))).strftime('%Y-%m-%d') 
     print('called!!')
-    return (1, amount, category, description, date)
+    return (2, amount, category, description, date)
 
 
-for _ in range(500):
+for _ in range(200):
     data = generate_random_data()
     cursor.execute('''
         INSERT INTO expenses (user_id, amount, category, description, date)
