@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, Response
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db_connection
@@ -7,7 +7,8 @@ from models.expense import Expense
 import models.family as Family
 from functions.auth import auth_user
 import math
-
+import csv
+import io
 routes = Blueprint('main', __name__)
 auth_routes = Blueprint('auth', __name__)
 
@@ -110,7 +111,7 @@ def add_expense():
     filters = {key: request.form.get(key) for key in ['category', 'start_date', 'end_date', 'min_amount', 'max_amount']}
     Expense.add_expense(current_user.id, amount, category, description, date)
     flash('Expense added successfully!', 'success')
-    return redirect(url_for('main.expenses', page=page, size=size, **filters))
+    return redirect(url_for('main.expenses', page=page, size=size))
 
 
 @routes.route('/edit_expense', methods=['POST'])
@@ -121,7 +122,7 @@ def edit_expense():
     page = request.form.get('page', 1, type=int)
     size = request.form.get('size', 5, type=int)
     Expense.update_expense(expense_id, amount, category, description, date)
-    return redirect(url_for('main.expenses', page=page, size=size, **filters))
+    return redirect(url_for('main.expenses', page=page, size=size))
 
 ## family
 @routes.route('/add_family', methods=['POST'])
@@ -143,6 +144,26 @@ def family():
     families = Family.get_all_family(current_user.id)
     return render_template('family/family.html', families=families)
 
+@routes.route('/export-expenses-csv')
+def export_expenses_csv():
+    sort_by = request.args.get('sort_by', 'date') 
+    sort_order = request.args.get('sort_order', 'asc')  
+    expenses = Expense.get_expenses(current_user.id, 1, 99999, dict(), sort_by, sort_order)
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    
+    writer.writerow(['Id', 'Category', 'Amount', 'Date', 'Description'])
+    
+    for expense in expenses[0]:
+        writer.writerow([str(expense[0]), str(expense[1]), expense[2], expense[3], expense[4], expense[5]])
+    
+    output.seek(0) 
+
+    return Response(
+        output.getvalue(),
+        mimetype='text/csv',
+        headers={"Content-Disposition": "attachment;filename=expenses.csv"}
+    )
 @routes.route('/logout')
 @login_required
 def logout():

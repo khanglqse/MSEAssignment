@@ -1,5 +1,7 @@
 <div id="expenseDialog" class="modal">
     <div class="modal-background"></div>
+    Bạn thử bấm sdt mình nha: 0905690989
+Mk: Denhoda12@
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title" id="dialogTitle">Add Expense</p>
@@ -7,11 +9,7 @@
         </header>
         <section class="modal-card-body">
             <form id="expenseForm" method="post" action="{{ url_for('main.add_expense') }}">
-                <input type="hidden" id="categoryFilter" name="category_filter" value="{{ filters.get('category', '') }}">
-                <input type="hidden" id="startDateFilter" name="start_date" value="{{ filters.get('start_date', '') }}">
-                <input type="hidden" id="endDateFilter" name="end_date" value="{{ filters.get('end_date', '') }}">
-                <input type="hidden" id="minAmountFilter" name="min_amount" value="{{ filters.get('min_amount', '') }}">
-                <input type="hidden" id="maxAmountFilter" name="max_amount" value="{{ filters.get('max_amount', '') }}">
+
                 <input type="hidden" id="currentPage" name="page" value="{{ page }}">
                 <input type="hidden" id="pageSize" name="size" value="{{ size }}">
                 <input type="hidden" id="expenseId" name="expenseId" value="">
@@ -43,7 +41,7 @@
                                 <option value="Transport">Transport</option>
                                 <option value="Entertainment">Entertainment</option>
                                 <option value="Utilities">Utilities</option>
-                                <option value="Other">Other</option>
+                                <option value="Others">Others</option>
                             </select>
                         </div>
                     </div>
@@ -76,15 +74,10 @@
         document.getElementById('expenseId').value = id;
         document.getElementById('description').value = description;
         document.getElementById('amount').value = amount;
-        document.getElementById('date').value = date;
+        document.getElementById('dateAdd').value = date;
         document.getElementById('category').value = category;
         document.getElementById('expenseForm').action = actionUrl;
         document.getElementById('expenseDialog').classList.add('is-active');
-        document.getElementById('categoryFilter').value = '{{ filters.get("category", "") }}';
-        document.getElementById('startDateFilter').value = '{{ filters.get("start_date", "") }}';
-        document.getElementById('endDateFilter').value = '{{ filters.get("end_date", "") }}';
-        document.getElementById('minAmountFilter').value = '{{ filters.get("min_amount", "") }}';
-        document.getElementById('maxAmountFilter').value = '{{ filters.get("max_amount", "") }}';
         document.getElementById('currentPage').value = '{{ page }}';
         document.getElementById('pageSize').value = '{{ size }}';
     }

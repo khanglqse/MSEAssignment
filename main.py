@@ -2,7 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from config import Config
 from routes import routes as main_routes, auth_routes
-from core.scss_complier import compile_scss
+# from scss_complier import compile_scss
 import os
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -20,4 +20,4 @@ app.register_blueprint(auth_routes)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0")
+    app.run(debug=True)

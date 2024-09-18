@@ -8,7 +8,9 @@
     <title>Pig Save</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/darkmode.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="manifest" href="static/manifest.json">
 </head>
 <body>
 <nav class="navbar is-transparent">
@@ -40,7 +42,10 @@
     </div>
 </nav>
 
+<button id="install-button" class="button is-primary" style="display:none;"> Install App</button>
 <section class="hero is-halfheight-with-navbar">
+   
+</button>
     <div class="hero-body">
         <div class="container">
             <h1 class="title is-1">
@@ -100,3 +105,61 @@
 
 
 </body>
+<script>
+    const toggleButton = document.getElementById('theme-toggle');
+    toggleButton.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    // Check localStorage for saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+</script>
+<script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/js/sw.js')
+      .then(() => console.log('Service Worker Registered'))
+      .catch((err) => console.log('Service Worker registration failed: ', err));
+    }
+  </script>
+  <script>
+    let deferredPrompt;
+
+    // Listen for the 'beforeinstallprompt' event
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent the mini-infobar from appearing
+        e.preventDefault();
+        // Store the event so it can be triggered later
+        deferredPrompt = e;
+        // Show the install button or any custom UI
+        document.getElementById('install-button').style.display = 'block';
+    });
+
+    // Handle the install button click
+    document.getElementById('install-button').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            // Show the install prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond
+            const choiceResult = await deferredPrompt.userChoice;
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            // Reset the deferred prompt variable
+            deferredPrompt = null;
+        }
+    });
+
+    // Check if the app is already installed
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        document.getElementById('install-button').style.display = 'none';
+    });
+</script>

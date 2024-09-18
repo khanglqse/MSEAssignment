@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Pig Save{% endblock %}</title>
+    <link rel="manifest" href="static/manifest.json">
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
@@ -12,6 +14,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+    <link rel="stylesheet" href="static/css/darkmode.css">
 
     {% block css %}{% endblock %}
     <style>
@@ -87,6 +90,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
+              <button id="theme-toggle" class="button">Dark Mode</button>
               <a href="{{ url_for('main.profile') }}">
                 <span class="button is-primary">
                   Hi {{ current_user.username }}
@@ -109,8 +113,30 @@
         <p>2024 Pig Save. All rights reserved.</p>
       </div>
     </footer>
-
     <script>
+      const toggleButton = document.getElementById('theme-toggle');
+      toggleButton.addEventListener('click', () => {
+          const currentTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+      });
+
+      // Check localStorage for saved theme
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+      }
+  </script>
+   <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/js/sw.js')
+      .then(() => console.log('Service Worker Registered'))
+      .catch((err) => console.log('Service Worker registration failed: ', err));
+    }
+  </script>
+    <script>
+      
       document.addEventListener("DOMContentLoaded", () => {
         const $navbarBurgers = Array.prototype.slice.call(
           document.querySelectorAll(".navbar-burger"),

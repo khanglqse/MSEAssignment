@@ -37,9 +37,10 @@ class Expense:
         
         params.extend([size, (page - 1) * size])
         query += f' ORDER BY {sort_by} {sort_order} LIMIT ? OFFSET ?'
+        print(query)
         cursor.execute(query, params)
+
         expenses = cursor.fetchall()
-        
         query_count = 'SELECT COUNT(*) FROM expenses WHERE user_id = ?'
         count_params = [user_id]
         

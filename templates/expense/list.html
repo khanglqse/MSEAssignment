@@ -49,7 +49,7 @@
                         <option value="Transport">Transport</option>
                         <option value="Entertainment">Entertainment</option>
                         <option value="Utilities">Utilities</option>
-                        <option value="Other">Other</option>
+                        <option value="Others">Others</option>
                     </select>
                   </div>
                 </div>
@@ -70,13 +70,18 @@
             <div class="control is-flex is-justify-content-flex-end">
                 <button type="submit" class="button is-info">Apply</button>
             </div>
+            <div class="buttons">
+              <a class="button is-primary" href="{{ url_for('main.export_expenses_csv') }}">
+                  Export to CSV
+              </a>
+          </div>
             <nav class="pagination is-centered mt-6" role="navigation">
-                <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size) }}"{% else %}disabled{% endif %}>Previous</a>
-                <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size) }}"{% else %}disabled{% endif %}>Next page</a>
+                <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size, sort_order=sort_order, sort_by=sort_by) }}"{% else %}disabled{% endif %}>Previous</a>
+                <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size, sort_order=sort_order, sort_by=sort_by) }}"{% else %}disabled{% endif %}>Next page</a>
                 <ul class="pagination-list">
                   {% for p in range(start_page, end_page + 1) %}
                     <li>
-                      <a class="pagination-link {% if p == page %}is-current{% endif %}" href="{{ url_for('main.expenses', page=p, size=size) }}">{{ p }}</a>
+                      <a class="pagination-link {% if p == page %}is-current{% endif %}" href="{{ url_for('main.expenses', page=p, size=size, sort_order=sort_order, sort_by=sort_by) }}">{{ p }}</a>
                     </li>
                   {% endfor %}
                 </ul>
@@ -123,7 +128,7 @@
                         <strong class="has-text-success">{{ expense[3] }}</strong>
                       </td>
                       <td>
-                        <span class="tag is-primary is-light">{{ expense[2] }}</span>
+                        <span class="tag is-primary is-light">{{ '{:,.0f}'.format(expense[2]) }}</span>
                       </td>
                       <td>{{ expense[5] }}</td>
 
@@ -145,12 +150,12 @@
             </div>
 
             <nav class="pagination is-centered mt-6" role="navigation" >
-              <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size) }}"{% else %}disabled{% endif %}>Previous</a>
-              <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size) }}"{% else %}disabled{% endif %}>Next page</a>
+              <a class="pagination-previous" {% if page > 1 %}href="{{ url_for('main.expenses', page=page-1, size=size, sort_order=sort_order, sort_by=sort_by) }}"{% else %}disabled{% endif %}>Previous</a>
+              <a class="pagination-next" {% if page < total_pages %}href="{{ url_for('main.expenses', page=page+1, size=size, sort_order=sort_order, sort_by=sort_by) }}"{% else %}disabled{% endif %}>Next page</a>
               <ul class="pagination-list">
                 {% for p in range(start_page, end_page + 1) %}
                   <li>
-                    <a class="pagination-link {% if p == page %}is-current{% endif %}" href="{{ url_for('main.expenses', page=p, size=size) }}">{{ p }}</a>
+                    <a class="pagination-link {% if p == page %}is-current{% endif %}" href="{{ url_for('main.expenses', page=p, size=size, sort_order=sort_order, sort_by=sort_by) }}">{{ p }}</a>
                   </li>
                 {% endfor %}
               </ul>
