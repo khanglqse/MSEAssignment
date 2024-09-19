@@ -1,6 +1,6 @@
 {
-    "name": "My Flask PWA",
-    "short_name": "FlaskPWA",
+    "name": "Pig Save",
+    "short_name": "PigSave",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

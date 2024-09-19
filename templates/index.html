@@ -41,6 +41,10 @@
         </div>
     </div>
 </nav>
+<div id="add-to-home" class="add-to-home" style="display: none;">
+    <p>To install this app on your home screen, tap the Share icon and then select "Add to Home Screen".</p>
+    <button id="dismiss-banner">Got it</button>
+</div>
 
 <button id="install-button" class="button is-primary" style="display:none;"> Install App</button>
 <section class="hero is-halfheight-with-navbar">
@@ -162,4 +166,29 @@
         console.log('PWA was installed');
         document.getElementById('install-button').style.display = 'none';
     });
+    document.addEventListener('DOMContentLoaded', function() {
+    const addToHomeBanner = document.getElementById('add-to-home');
+    const dismissBannerButton = document.getElementById('dismiss-banner');
+    
+    // Function to check if the user is on iOS
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    // Function to check if the app is installed
+    function isAppInstalled() {
+        return window.matchMedia('(display-mode: standalone)').matches;
+    }
+
+    // Show the banner if not installed and user is on iOS
+    if (isIOS() && !isAppInstalled()) {
+        addToHomeBanner.style.display = 'block';
+    }
+
+    // Dismiss the banner
+    dismissBannerButton.addEventListener('click', function() {
+        addToHomeBanner.style.display = 'none';
+    });
+});
+
 </script>
