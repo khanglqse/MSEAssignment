@@ -29,15 +29,17 @@ def load_user_language():
         cursor = conn.cursor()
         cursor.execute("SELECT language FROM users WHERE id = ?", (current_user.id,))
         result = cursor.fetchone()
-        print(f'langauge: {result}')
         if result:
             g.language = result[0]
         else:
-            g.language = 'en' 
+            g.language = None 
 
 def get_locale():
-    language = getattr(g, 'language', 'en')
-    return language
+    language = getattr(g, 'language', None)
+    if language is not None:
+        return language
+    return request.accept_languages.best_match(['vi', 'en'])
+
 
 babel = Babel(app, locale_selector=get_locale)
 

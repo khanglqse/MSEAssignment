@@ -27,3 +27,7 @@ msgstr "Chi tiêu trong tháng"
 
 msgid "Total This Week"
 msgstr "Chi tiêu trong tuần"
+
+msgid "Take Control of Your Finances"
+msgstr "Kiểm soát tài chính của bạn"
+

@@ -28,3 +28,8 @@ msgstr "Total This Month"
 
 msgid "Total This Week"
 msgstr "Total This Week"
+
+
+msgid "Take Control of Your Finances"
+msgstr "Take Control of Your Finances"
+
