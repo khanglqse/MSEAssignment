@@ -31,3 +31,5 @@ msgstr "Chi tiêu trong tuần"
 msgid "Take Control of Your Finances"
 msgstr "Kiểm soát tài chính của bạn"
 
+msgid "Aboutt"
+msgstr "Chữa lành cho ví. Bớt xin tiền vợ"

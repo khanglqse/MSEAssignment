@@ -33,3 +33,5 @@ msgstr "Total This Week"
 msgid "Take Control of Your Finances"
 msgstr "Take Control of Your Finances"
 
+msgid "Aboutt"
+msgstr "We are humans. We don’t make much (trust us, we've checked). We overspend, we fund games. We got tired of watching our wallets wet (look like it just cried). We think about life, we need to responsible as adult, we found a solution. Boom! PigSave was born. Now, we save, we track, we can stop asking wifes for breakfast and morning coffee."
