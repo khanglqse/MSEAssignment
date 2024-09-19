@@ -72,18 +72,18 @@
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
           <a class="navbar-item" href="{{ url_for('main.dashboard') }}">
-            Home
+            {{_('Home')}}
           </a>
 
           <a class="navbar-item" href="{{ url_for('main.expenses') }}">
-            My Expenses
+            {{_('Expenses')}}
           </a>
 
           <a class="navbar-item" href="{{ url_for('main.profile') }}">
-            Profile
+            {{_('My Profile')}}
           </a>
           <a class="navbar-item" href="{{ url_for('main.family') }}">
-            Family
+            {{_('Family')}}
           </a>
         </div>
         {% if current_user.is_authenticated %}
@@ -97,7 +97,7 @@
                 </span>
               </a>
               <a class="button is-light" href="{{ url_for('main.logout') }}">
-                <strong>Logout</strong>
+                <strong>{{_('Logout')}}</strong>
               </a>
             </div>
           </div>

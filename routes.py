@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, Response
+from flask import Blueprint, render_template, redirect, url_for, request, flash, Response,session
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import get_db_connection
@@ -9,6 +9,7 @@ from functions.auth import auth_user
 import math
 import csv
 import io
+from flask_babel import gettext as _
 routes = Blueprint('main', __name__)
 auth_routes = Blueprint('auth', __name__)
 
@@ -60,11 +61,21 @@ def login():
             flash('Invalid credentials. Please try again.', 'danger')
 
     return render_template('auth/login.html')
-
+# profile
 @routes.route('/profile')
 @login_required
 def profile():
     return render_template('user/profile.html')
+
+@routes.route('/update_language', methods=['POST'])
+def update_language():
+    language = request.form.get('language')
+    if language:
+        User.update_language(current_user.id, language)
+        login_user(current_user, remember=True)
+        flash("Language preference updated!", "success")
+    return redirect(url_for('main.profile'))
+
 
 @routes.route('/dashboard')
 @login_required
@@ -164,6 +175,8 @@ def export_expenses_csv():
         mimetype='text/csv',
         headers={"Content-Disposition": "attachment;filename=expenses.csv"}
     )
+
+
 @routes.route('/logout')
 @login_required
 def logout():

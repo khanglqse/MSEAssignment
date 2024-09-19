@@ -1,0 +1,29 @@
+msgid "My Profile"
+msgstr "Trang cá nhân"
+
+msgid "Basic Information"
+msgstr "Thông tin cơ bản"
+
+msgid "About Me"
+msgstr "Tôi"
+
+msgid "Expenses"
+msgstr "Chi Tiêu"
+
+msgid "Home"
+msgstr "Trang Chủ"
+
+msgid "Family"
+msgstr "Gia Đình"
+
+msgid "Logout"
+msgstr "Đăng Xuất"
+
+msgid "Total This Year"
+msgstr "Chi tiêu trong năm"
+
+msgid "Total This Month"
+msgstr "Chi tiêu trong tháng"
+
+msgid "Total This Week"
+msgstr "Chi tiêu trong tuần"

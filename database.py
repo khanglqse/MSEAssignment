@@ -18,6 +18,7 @@ def create_tables():
         )
     ''')
 
+
     # expense
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS expenses (

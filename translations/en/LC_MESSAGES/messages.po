@@ -1,0 +1,30 @@
+msgid "My Profile"
+msgstr "My Profile"
+
+msgid "Basic Information"
+msgstr "Basic Information"
+
+msgid "About Me"
+msgstr "About Me"
+
+msgid "Expenses"
+msgstr "Expenses"
+
+msgid "Home"
+msgstr "Home Page"
+
+msgid "Family"
+msgstr "Family"
+
+msgid "Logout"
+msgstr "Logout"
+
+
+msgid "Total This Year"
+msgstr "Total This Year"
+
+msgid "Total This Month"
+msgstr "Total This Month"
+
+msgid "Total This Week"
+msgstr "Total This Week"

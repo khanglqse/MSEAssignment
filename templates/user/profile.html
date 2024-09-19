@@ -22,7 +22,7 @@
             <div class="columns is-centered">
                 <div class="column has-text-centered">
                     <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-picture">
-                    <h2 class="title">{{current_user.name}}</h2>
+                    <h2 class="title">{{ current_user.name }}</h2>
                     <p class="subtitle">@kunwalle</p>
                 </div>
             </div>
@@ -32,25 +32,39 @@
                 <div class="column is-half">
                     <div class="box">
                         <h3 class="subtitle">Basic Information</h3>
-                        <p><strong>Email:</strong> khang@mse.fpt.com</p>
-                        <p><strong>Phone:</strong> (123) 4567890</p>
-                        <p><strong>Address:</strong> FPT An Don</p>
+                        <p><strong>Email:</strong> {{ current_user.email }}</p>
+                        <p><strong>Phone:</strong> {{ current_user.phone }}</p>
+                        <p><strong>Address:</strong> {{ current_user.address }}</p>
+                        <form action="{{ url_for('main.update_language') }}" method="POST">
+                            <div class="field">
+                                <label class="label" for="language">Preferred Language:</label>
+                                <div class="control">
+                                    <div class="select">
+                                        <select id="language" name="language">
+                                            <option value="en" {% if current_user.language == 'en' %}selected{% endif %}>English</option>
+                                            <option value="vi" {% if current_user.language == 'vi' %}selected{% endif %}>Vietnamese</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <button type="submit" class="button is-link">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                        
                     </div>
                 </div>
                 <div class="column is-half">
                     <div class="box">
                         <h3 class="subtitle">About Me</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam imperdiet euismod urna, a tempus libero commodo eget. Integer vehicula libero in dui venenatis, eu fermentum orci vehicula.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam imperdiet euismod urna, a tempus libero commodo eget.</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="profile-info">
-            <div class="box">
-                <h3 class="subtitle">Contact?</h3>
-                <p><strong>Phone:</strong> <a href="tel:+1234567890">123456789</a></p>
-            </div>
-        </div>
     </div>
 </section>
+
 {% endblock %}
