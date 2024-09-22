@@ -99,14 +99,14 @@ class Expense:
             FROM expenses
             WHERE strftime('%Y', date) = ? and user_id = ?
         """, (now.strftime('%Y'), user_id))
-        total_year = '{:,.0f}'.format(ZeroIfNone(cursor.fetchone()[0]))
+        total_year = ZeroIfNone(cursor.fetchone()[0])
 
         cursor.execute("""
         SELECT SUM(amount) AS total
         FROM expenses
         WHERE strftime('%m', date) = ? and user_id = ?
         """, (now.strftime('%m'), user_id))
-        total_month = '{:,.0f}'.format(ZeroIfNone(cursor.fetchone()[0]))
+        total_month = ZeroIfNone(cursor.fetchone()[0])
         
         start_of_week = (now - timedelta(days=now.weekday())).strftime('%Y-%m-%d')
         cursor.execute("""
@@ -114,7 +114,7 @@ class Expense:
             FROM expenses
             WHERE date >= ?
         """, (start_of_week,))
-        total_week = '{:,.0f}'.format(ZeroIfNone(cursor.fetchone()[0]))
+        total_week = ZeroIfNone(cursor.fetchone()[0])
         cursor.execute("""
         SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total
         FROM expenses

@@ -9,6 +9,7 @@ from functions.auth import auth_user
 import math
 import csv
 import io
+from core.currency_exchange import get_exchange_rate
 from flask_babel import gettext as _
 routes = Blueprint('main', __name__)
 auth_routes = Blueprint('auth', __name__)
@@ -61,7 +62,7 @@ def login():
             flash('Invalid credentials. Please try again.', 'danger')
 
     return render_template('auth/login.html')
-# profile
+
 @routes.route('/profile')
 @login_required
 def profile():
@@ -81,6 +82,9 @@ def update_language():
 @login_required
 def dashboard():
     line_data, pie_data, total_week, total_month, total_year = Expense.get_report(current_user.id)
+    total_week = get_amount(float(total_week))
+    total_month = get_amount(float(total_month))
+    total_year = get_amount(float(total_year))
     return render_template('dashboard.html', user = current_user, line_data = line_data, pie_data = pie_data, total_week = total_week, total_month = total_month, total_year = total_year)
 
 @routes.route('/expenses')
@@ -94,7 +98,7 @@ def expenses():
 
     filters = {key: request.args.get(key) for key in ['category', 'start_date', 'end_date', 'min_amount', 'max_amount']}
     expenses, total_expenses = Expense.get_expenses(user_id, page, size, filters, sort_by, sort_order)
-
+  
     total_pages = math.ceil(total_expenses / size)
     max_pages_displayed = 4
     start_page = max(1, page - 2)
@@ -135,7 +139,7 @@ def edit_expense():
     Expense.update_expense(expense_id, amount, category, description, date)
     return redirect(url_for('main.expenses', page=page, size=size))
 
-## family
+#
 @routes.route('/add_family', methods=['POST'])
 def add_family():
     family_name = request.form['family_name']
@@ -179,10 +183,26 @@ def export_expenses_csv():
 @routes.route('/delete_expense/<int:expense_id>', methods=['DELETE'])
 @login_required
 def delete_expense(expense_id):
-    Expense.delete_expense(expense_id)  # Ensure the user can only delete their own expenses
+    Expense.delete_expense(expense_id)  
     flash('Expense deleted successfully!', 'success')
     return redirect(url_for('main.expenses'))
 
+@routes.route('/update_currency', methods=['POST'])
+@login_required
+def update_currency():
+    currency = request.form.get('currency')
+    rate = get_exchange_rate()
+    session['currency'] = currency
+    session['rate'] = rate
+    flash(f"Currency preference updated to {currency}!", "success")
+    return redirect(url_for('main.dashboard'))
+
+def get_amount(amount):
+    currency = session.get('currency', 'VND')  
+    if currency == 'USD':
+        exchange_rate = session['rate']  
+        return f"{'{:,.2f}'.format(amount / exchange_rate)} USD"  
+    return f"{'{:,.0f}'.format(amount)} VND"
 
 @routes.route('/logout')
 @login_required

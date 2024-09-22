@@ -1,6 +1,6 @@
 html[data-theme='dark'] {
     background-color: #121212;
-    color: #e0e0e0;
+    color: #e0e0e0 !important;
   }
   
   html[data-theme='dark'] .navbar {
@@ -29,3 +29,9 @@ html[data-theme='dark'] {
   html[data-theme='dark'] .container {
     background: radial-gradient(#6f6a6a, transparent)
   }
+  html[data-theme='dark'] #theme-toggle {
+    /* background-color: #6200ee; */
+    color: white;
+  }
+
+  

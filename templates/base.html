@@ -87,21 +87,37 @@
           </a>
         </div>
         {% if current_user.is_authenticated %}
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <button id="theme-toggle" class="button">Dark Mode</button>
-              <a href="{{ url_for('main.profile') }}">
-                <span class="button is-primary">
-                  Hi {{ current_user.username }}
-                </span>
-              </a>
-              <a class="button is-light" href="{{ url_for('main.logout') }}">
-                <strong>{{_('Logout')}}</strong>
-              </a>
-            </div>
-          </div>
+        {% if current_user.is_authenticated %}
+<div class="navbar-end">
+  <div class="navbar-item">
+    <form method="POST" action="{{ url_for('main.update_currency') }}" class="field has-addons">
+      <div class="control">
+        <div class="select">
+          <select name="currency" id="currency">
+            <option value="VND" {% if session.get('currency') == 'VND' %}selected{% endif %}>VND</option>
+            <option value="USD" {% if session.get('currency') == 'USD' %}selected{% endif %}>USD</option>
+          </select>
         </div>
+      </div>
+      <div class="control">
+        <button type="submit" class="button is-info">Set Currency</button>
+      </div>
+    </form>
+  </div>
+  <div class="navbar-item">
+    <div class="buttons">
+      <button id="theme-toggle" class="button">Dark Mode</button>
+      <a href="{{ url_for('main.profile') }}">
+        <span class="button is-primary">Hi {{ current_user.username }}</span>
+      </a>
+      <a class="button is-light" href="{{ url_for('main.logout') }}">
+        <strong>{{_('Logout')}}</strong>
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
         {% endif %}
       </div>
     </nav>
