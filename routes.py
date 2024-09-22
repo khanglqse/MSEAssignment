@@ -176,6 +176,13 @@ def export_expenses_csv():
         headers={"Content-Disposition": "attachment;filename=expenses.csv"}
     )
 
+@routes.route('/delete_expense/<int:expense_id>', methods=['DELETE'])
+@login_required
+def delete_expense(expense_id):
+    Expense.delete_expense(expense_id)  # Ensure the user can only delete their own expenses
+    flash('Expense deleted successfully!', 'success')
+    return redirect(url_for('main.expenses'))
+
 
 @routes.route('/logout')
 @login_required

@@ -81,6 +81,15 @@ class Expense:
                        (amount, category, description, date, expense_id))
         conn.commit()
         conn.close()
+
+    def delete_expense(expense_id):
+        print(expense_id)
+        conn = sqlite3.connect('pig_save.db')
+        cursor = conn.cursor()
+        cursor.execute(f"DELETE FROM expenses WHERE id = {expense_id}")
+        conn.commit()
+        conn.close()
+        
     def get_report(user_id):
         conn = sqlite3.connect('pig_save.db')
         cursor = conn.cursor()

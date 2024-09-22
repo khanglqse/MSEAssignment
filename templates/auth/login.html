@@ -22,6 +22,16 @@
         .toast.show {
             display: block;
         }
+        .box {
+          border-radius: 15px;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .input, .button {
+          border-radius: 10px;
+      }
+      .input:hover, .button:hover {
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
     </style>
 </head>
 <body>
@@ -43,7 +53,7 @@
       <div class="columns is-centered">
         <div class="column is-5-tablet is-4-desktop is-3-widescreen">
           <form action="{{ url_for('auth.login') }}" method="POST" class="box">
-            <h1 class="title has-text-centered">Login</h1>
+            <h1 class="is-size-3 has-text-centered">Login</h1>
             
             <div class="field">
               <label for="username" class="label">Username</label>

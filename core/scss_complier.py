@@ -3,7 +3,7 @@ import os
 
 def compile_scss():
     scss_dir = 'static/scss'
-    css_dir = './static/css'
+    css_dir = 'static/css'
 
     if not os.path.exists(scss_dir):
         print(f"Error: SCSS directory '{scss_dir}' does not exist.")

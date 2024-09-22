@@ -185,5 +185,20 @@
       modal.classList.remove('is-active');
     }
   };
+  function deleteExpense(expenseId) {
+    if (confirm('Are you sure you want to delete this expense?')) {
+        fetch(`/delete_expense/${expenseId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+              location.reload(); // Reload the page to reflect changes
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    }
+}
+
 </script>
 {% endblock %}
