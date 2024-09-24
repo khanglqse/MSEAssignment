@@ -17,7 +17,7 @@
     <div class="container">
         <div class="navbar-brand">
             <a class="navbar-item" href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Expenses Tracker Logo" width="150" height="80">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Expenses Tracker Logo" >
             </a>
             <div class="navbar-burger" data-target="navbarMenu">
                 <span></span>
@@ -92,7 +92,32 @@
         </div>
     </div>
 </div>
-
+<section class="section-faq"></section>
+    <div class="container">
+        <h4 class="has-text-centered is-size-3">Frequently Asked Questions</h4>
+        <div class="columns mt-5">
+            <div class="column is-half">
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>Is my data secure?</p>
+                    </div>
+                    <div class="message-body">
+                        Yes, we use top-notch security measures to protect your financial information.
+                    </div>
+                </article>
+            </div>
+            <div class="column is-half">
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>Can I export my data?</p>
+                    </div>
+                    <div class="message-body">
+                        Absolutely! You can export all your expenses to a CSV file at any time.
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
 <section id="about" class="section has-background-light">
     <div class="container">
         <h2 class="has-text-weight-bold is-size-2 has-text-centered">About Us</h2>

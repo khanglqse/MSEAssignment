@@ -14,10 +14,11 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT NOT NULL UNIQUE,
             name TEXT,
+            language TEXT,
+            age INTERGER,
             password TEXT NOT NULL
         )
     ''')
-
 
     # expense
     cursor.execute('''

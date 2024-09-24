@@ -24,22 +24,23 @@ def add_family_member(family_id, username):
         cursor.execute("INSERT INTO family_members (family_id, user_id) VALUES (?, ?)", (family_id, user_id))
         conn.commit()
         conn.close()
-        return "Family member added successfully."
+        return True
     else:
         conn.close()
-        return "Username not found."
+        return False
 def get_all_family(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
         SELECT f.id, f.family_name
         FROM family_members fm
-        JOIN family f ON fm.family_id = f.id
+        LEFT JOIN family f ON fm.family_id = f.id
         WHERE fm.user_id = ?
     """, (user_id,))
     families = cursor.fetchall()
     lst_family = []
     for f in families:
+       
        lst_family.append({
            'family_name': f[1],
            'id': f[0],
@@ -76,13 +77,12 @@ def get_family_expenses(family_id):
                SUM(CASE WHEN strftime('%Y-%W', e.date) = ? THEN e.amount ELSE 0 END) as total_week
         FROM family_members fm
         JOIN users u ON u.id = fm.user_id
-        JOIN expenses e ON e.user_id = u.id
+        LEFT JOIN expenses e ON e.user_id = u.id
         WHERE fm.family_id = ?
         GROUP BY u.name
     """, (current_year, f"{current_year}-{current_month}", f"{current_year}-{current_week}", family_id))
 
     member_expenses = cursor.fetchall()
-
     conn.close()
 
     member_expenses_list = [

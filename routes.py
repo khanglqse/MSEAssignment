@@ -27,7 +27,7 @@ def register():
         confirm_password = request.form['confirm_password']
 
         if password != confirm_password:
-            flash('Passwords do not match!', 'error')
+            flash('Passwords do not match!', 'danger')
             return redirect(url_for('main.register'))
         
         hashed_password = generate_password_hash(password)
@@ -150,7 +150,11 @@ def add_family():
 def add_member():
     name = request.form['member_name']
     f_id = request.form['family_id']
-    Family.add_family_member(f_id, name)
+    result = Family.add_family_member(f_id, name)
+    if result:
+        flash("Family member added successfully.", 'success')
+    else:
+        flash("User not found.", 'danger')
     return redirect(url_for('main.family'))
 
 @routes.route('/family')

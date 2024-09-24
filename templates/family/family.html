@@ -13,7 +13,6 @@
         {% include 'family/add.html' %}
 
         
-
         {% for family in families %}
         <div class="box mt-2 mb-5">
             
@@ -22,15 +21,15 @@
                     <h1 class="is-size-4">{{family.family_name}}</h1>
                 </div>
                 <div class="column has-text-right">
-                    <button class="button is-primary" id="openModalBtn">+ Add Family Member</button>
+                    <button class="button is-primary" id="openModalBtn{{family.id}}">+ Add Family Member</button>
                 </div>
             </div>
-            <div class="modal" id="familyModal">
+            <div class="modal" id="familyModal{{family.id}}">
                 <div class="modal-background"></div>
                 <div class="modal-card">
                     <header class="modal-card-head">
                         <p class="modal-card-title">Add Family Member</p>
-                        <button class="delete" aria-label="close" id="closeModalBtn"></button>
+                        <button class="delete" aria-label="close" id="closeModalBtn{{family.id}}"></button>
                     </header>
                     <section class="modal-card-body">
                         <form action="/add_member" method="post">
@@ -121,18 +120,32 @@
     document.getElementById('cancelBtn').addEventListener('click', function() {
       document.getElementById('addFamilyModal').classList.remove('is-active');
     });
+    document.addEventListener('DOMContentLoaded', function() {
 
-    document.getElementById('openModalBtn').addEventListener('click', function () {
-            document.getElementById('familyModal').classList.add('is-active');
+        {{ families | tojson }}.forEach(element => {
+            console.log(1)
+        addListener(element.id)
+    });
+   function addListener(id){
+       
+       var btn = 'openModalBtn' + id
+       var modal = 'familyModal' + id
+       var clsbtn = 'closeModalBtn' + id
+       console.log(btn)
+    document.getElementById(btn).addEventListener('click', function () {
+            document.getElementById(modal).classList.add('is-active');
         });
 
-        document.getElementById('closeModalBtn').addEventListener('click', function () {
-            document.getElementById('familyModal').classList.remove('is-active');
+        document.getElementById(clsbtn).addEventListener('click', function () {
+            document.getElementById(modal).classList.remove('is-active');
         });
 
         // Close modal when clicking outside
         document.querySelector('.modal-background').addEventListener('click', function () {
-            document.getElementById('familyModal').classList.remove('is-active');
+            document.getElementById(modal).classList.remove('is-active');
         });
+   }
+    })
+   
   </script>
 {% endblock %}
