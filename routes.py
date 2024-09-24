@@ -90,9 +90,10 @@ def dashboard():
 @routes.route('/expenses')
 @login_required
 def expenses():
-    user_id = current_user.id
+    page = request.args.get('page', 1, type=int)
     page = request.args.get('page', 1, type=int)
     size = request.args.get('size', 5, type=int)
+    user_id = request.args.get('user_id', current_user.id)
     sort_by = request.args.get('sort_by', 'date') 
     sort_order = request.args.get('sort_order', 'asc')  
 

@@ -74,7 +74,8 @@ def get_family_expenses(family_id):
         SELECT u.name,
                SUM(CASE WHEN strftime('%Y', e.date) = ? THEN e.amount ELSE 0 END) as total_year,
                SUM(CASE WHEN strftime('%Y-%m', e.date) = ? THEN e.amount ELSE 0 END) as total_month,
-               SUM(CASE WHEN strftime('%Y-%W', e.date) = ? THEN e.amount ELSE 0 END) as total_week
+               SUM(CASE WHEN strftime('%Y-%W', e.date) = ? THEN e.amount ELSE 0 END) as total_week,
+                   u.id
         FROM family_members fm
         JOIN users u ON u.id = fm.user_id
         LEFT JOIN expenses e ON e.user_id = u.id
@@ -87,6 +88,7 @@ def get_family_expenses(family_id):
 
     member_expenses_list = [
         {
+            'id': row[4],
             'name': row[0],
             'total_year': '{:,.0f}'.format(row[1] or 0),
             'total_month': '{:,.0f}'.format(row[2] or 0),

@@ -85,7 +85,7 @@
                 <tbody>
                     {% for member in family.data.members %}
                     <tr>
-                    <td ><a class="is-link" href="/profile">{{member.name}}</a></td>
+                    <td ><a class="is-link" href="/expenses?size=50&user_id={{member.id}}">{{member.name}}</a></td>
                     <td>{{member.total_week}}</td>
                     <td>{{member.total_month}}</td>
                     <td>{{member.total_year}}</td>
